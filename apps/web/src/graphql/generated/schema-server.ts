@@ -906,6 +906,33 @@ export type UserFieldsFragment = {
   defaultOrganizationId?: string | null;
 };
 
+export type SwitchOrganizationMutationVariables = Exact<{
+  organizationId: Scalars['String']['input'];
+}>;
+
+export type SwitchOrganizationMutation = {
+  __typename?: 'Mutation';
+  switchOrganization: { __typename?: 'Tokens'; token: string; refreshToken: string };
+};
+
+export type DeleteOrganizationMutationVariables = Exact<{
+  organizationId: Scalars['String']['input'];
+}>;
+
+export type DeleteOrganizationMutation = {
+  __typename?: 'Mutation';
+  deleteOrganization: { __typename?: 'Organization'; id: string };
+};
+
+export type CreateOrganizationMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+export type CreateOrganizationMutation = {
+  __typename?: 'Mutation';
+  createOrganization: { __typename?: 'Organization'; id: string };
+};
+
 export const UserFieldsFragmentDoc = gql`
   fragment UserFields on User {
     id
@@ -1084,6 +1111,28 @@ export const LoginProvidersDocument = gql`
     }
   }
 `;
+export const SwitchOrganizationDocument = gql`
+  mutation switchOrganization($organizationId: String!) {
+    switchOrganization(organizationId: $organizationId) {
+      token
+      refreshToken
+    }
+  }
+`;
+export const DeleteOrganizationDocument = gql`
+  mutation deleteOrganization($organizationId: String!) {
+    deleteOrganization(organizationId: $organizationId) {
+      id
+    }
+  }
+`;
+export const CreateOrganizationDocument = gql`
+  mutation createOrganization($name: String!) {
+    createOrganization(name: $name) {
+      id
+    }
+  }
+`;
 export type Requester<C = {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C>(requester: Requester<C>) {
   return {
@@ -1176,6 +1225,36 @@ export function getSdk<C>(requester: Requester<C>) {
         variables,
         options,
       ) as Promise<LoginProvidersQuery>;
+    },
+    switchOrganization(
+      variables: SwitchOrganizationMutationVariables,
+      options?: C,
+    ): Promise<SwitchOrganizationMutation> {
+      return requester<SwitchOrganizationMutation, SwitchOrganizationMutationVariables>(
+        SwitchOrganizationDocument,
+        variables,
+        options,
+      ) as Promise<SwitchOrganizationMutation>;
+    },
+    deleteOrganization(
+      variables: DeleteOrganizationMutationVariables,
+      options?: C,
+    ): Promise<DeleteOrganizationMutation> {
+      return requester<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>(
+        DeleteOrganizationDocument,
+        variables,
+        options,
+      ) as Promise<DeleteOrganizationMutation>;
+    },
+    createOrganization(
+      variables: CreateOrganizationMutationVariables,
+      options?: C,
+    ): Promise<CreateOrganizationMutation> {
+      return requester<CreateOrganizationMutation, CreateOrganizationMutationVariables>(
+        CreateOrganizationDocument,
+        variables,
+        options,
+      ) as Promise<CreateOrganizationMutation>;
     },
   };
 }

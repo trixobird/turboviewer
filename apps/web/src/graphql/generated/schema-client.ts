@@ -907,6 +907,33 @@ export type UserFieldsFragment = {
   defaultOrganizationId?: string | null;
 };
 
+export type SwitchOrganizationMutationVariables = Exact<{
+  organizationId: Scalars['String']['input'];
+}>;
+
+export type SwitchOrganizationMutation = {
+  __typename?: 'Mutation';
+  switchOrganization: { __typename?: 'Tokens'; token: string; refreshToken: string };
+};
+
+export type DeleteOrganizationMutationVariables = Exact<{
+  organizationId: Scalars['String']['input'];
+}>;
+
+export type DeleteOrganizationMutation = {
+  __typename?: 'Mutation';
+  deleteOrganization: { __typename?: 'Organization'; id: string };
+};
+
+export type CreateOrganizationMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+export type CreateOrganizationMutation = {
+  __typename?: 'Mutation';
+  createOrganization: { __typename?: 'Organization'; id: string };
+};
+
 export const UserFieldsFragmentDoc = gql`
   fragment UserFields on User {
     id
@@ -1154,4 +1181,38 @@ export function useLoginProvidersQuery(options?: Omit<Urql.UseQueryArgs<LoginPro
     query: LoginProvidersDocument,
     ...options,
   });
+}
+export const SwitchOrganizationDocument = gql`
+  mutation switchOrganization($organizationId: String!) {
+    switchOrganization(organizationId: $organizationId) {
+      token
+      refreshToken
+    }
+  }
+`;
+
+export function useSwitchOrganizationMutation() {
+  return Urql.useMutation<SwitchOrganizationMutation, SwitchOrganizationMutationVariables>(SwitchOrganizationDocument);
+}
+export const DeleteOrganizationDocument = gql`
+  mutation deleteOrganization($organizationId: String!) {
+    deleteOrganization(organizationId: $organizationId) {
+      id
+    }
+  }
+`;
+
+export function useDeleteOrganizationMutation() {
+  return Urql.useMutation<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>(DeleteOrganizationDocument);
+}
+export const CreateOrganizationDocument = gql`
+  mutation createOrganization($name: String!) {
+    createOrganization(name: $name) {
+      id
+    }
+  }
+`;
+
+export function useCreateOrganizationMutation() {
+  return Urql.useMutation<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument);
 }
